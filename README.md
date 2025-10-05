@@ -11,6 +11,8 @@ Pagination Controls — Next / Previous buttons using the since parameter.
 
 Search Functionality — Debounced client-side search within the fetched page.
 
+Favorites System — Add/remove users to a favorites list that persists across page reloads using Zustand and localStorage.
+
 Routing — Implemented with React Router v7+ (/ for Home, /favorites ).
 
 Responsive UI — Styled with Tailwind CSS.
@@ -26,6 +28,8 @@ TypeScript
 Vite
 
 React Router DOM
+
+Zustand (for global state management)
 
 Tailwind CSS
 
@@ -108,6 +112,8 @@ src/
 ├── components/  
 │ ├── UserCard.tsx  
 │ └── PaginationControls.tsx  
+├── store/  
+│   └── favoritesStore.ts     # Zustand store for managing favorites  
 ├── App.tsx # Routing and navigation  
 └── main.tsx  
 
@@ -125,20 +131,16 @@ A debounce mechanism prevents unnecessary re-renders while typing.
 
 *Favorites*
 
-A /favorites route is already set up but not yet implemented.
-The logic for managing and persisting favorites will be added later using Context or Zustand.
+The favorites feature is managed globally using Zustand. User data is persisted in localStorage via Zustand's persist middleware, ensuring the list is saved across page reloads. The /favorites route reads from this store to display saved users.
 
  **Known Issues & Future Improvements**
-Area Status Notes
+
 Pagination Works, but relies on user IDs (since param) Can lead to inconsistent results when moving back/forth
 Search Functional (debounced) Currently local to fetched data only
 Error Handling Minimal Needs more robust handling for GitHub API errors
-Favorites Placeholder only To be implemented
 Dark Mode Not implemented yet Will be added later if time allows
 
  **Backlog / Next Steps**
-
-Implement Favorites state management with Context or Zustand.
 
 Improve error handling with toasts and better UI states.
 
@@ -159,6 +161,8 @@ TypeScript ensures type safety and easier maintenance.
 Fetch API was used instead of Axios to keep dependencies minimal.
 
 Tailwind CSS allows quick, responsive UI development.
+
+Zustand was chosen for state management due to its simplicity, minimal boilerplate, and powerful persist middleware for handling localStorage.
 
 React Router v7+ provides a clean routing structure for SPA navigation.
 
