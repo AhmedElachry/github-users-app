@@ -13,6 +13,8 @@ Search Functionality — Debounced client-side search within the fetched page.
 
 Favorites System — Add/remove users to a favorites list that persists across page reloads using Zustand and localStorage.
 
+UI Feedback — Non-intrusive toast notifications (via Sonner) confirm when users are added or removed from favorites.
+
 Routing — Implemented with React Router v7+ (/ for Home, /favorites ).
 
 Responsive UI — Styled with Tailwind CSS.
@@ -32,6 +34,8 @@ Vite
 React Router DOM
 
 Zustand (for global state management)
+
+Sonner (for toast notifications)
 
 Tailwind CSS
 
@@ -151,13 +155,15 @@ The favorites feature is managed globally using Zustand. User data is persisted 
 
 \*The application supports both light and dark themes. The implementation uses Tailwind CSS’s built-in dark variant and saves the user's preference to localStorage to ensure persistence across sessions.
 
+Toast Notifications
+
+The app uses Sonner to provide non-intrusive toast notifications. This gives the user immediate feedback when they add or remove a user from their favorites, improving the overall user experience.
+
 **Known Issues & Future Improvements**
 
 Pagination Works, but relies on user IDs (since param) Can lead to inconsistent results when moving back/forth
 
-Search Functional (debounced) Currently local to fetched data only
-
-Error Handling Minimal Needs more robust handling for GitHub API errors
+Error Handling Minimal Needs more robust handling for GitHub API errors, UI feedback for user actions is implemented (toasts).
 
 **Backlog / Next Steps**
 
@@ -184,6 +190,8 @@ Zustand was chosen for state management due to its simplicity, minimal boilerpla
 React Router v7+ provides a clean routing structure for SPA navigation.
 
 Debounced search improves UX without unnecessary re-renders.
+
+Sonner was selected for toast notifications due to its clean design, ease of use, and lightweight nature.
 
 **Code Review Notes**
 
