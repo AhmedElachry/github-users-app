@@ -3,7 +3,7 @@ GitHub Users Browser — Hiring Challenge (Q3 2025)
 This project is a simple web application built as part of a Frontend Engineer Hiring Challenge (Q3 2025).
 It fetches and displays paginated lists of GitHub users using GitHub’s public API, supports search within the fetched data, and provides a route for a Favorites page.
 
- **Features Implemented**
+**Features Implemented**
 
 Fetch & Display Users — Using GitHub’s REST API (https://api.github.com/users).
 
@@ -19,7 +19,9 @@ Responsive UI — Styled with Tailwind CSS.
 
 Environment Variable Support — Optional GitHub token via .env file to increase rate limits.
 
- **Tech Stack**
+Dark Mode — Toggle between light and dark themes with the user's preference saved in localStorage.
+
+**Tech Stack**
 
 React 19
 
@@ -53,7 +55,8 @@ How to use it
 
 If no token is provided, the app will continue to work but may hit the rate limit after multiple API requests.
 
- **Installation & Setup**
+**Installation & Setup**
+
 1. Clone the repository
 
 git clone https://github.com/AhmedElachry/github-users-app
@@ -65,15 +68,19 @@ cd github-users-app
 You can use any package manager you prefer:
 
 # using bun
+
 bun install
 
 # or npm
+
 npm install
 
 # or pnpm
+
 pnpm install
 
 # or yarn
+
 yarn install
 
 3. Create .env file (optional but recommended)
@@ -83,68 +90,78 @@ To avoid hitting this limit, create a .env file in the project root and include 
 
 VITE_GITHUB_TOKEN=your_personal_github_token
 
-
 You can create a token here:
 [ Generate a new GitHub Personal Access Token](https://github.com/settings/tokens)
 
 4. Run the development server
-bun dev
+   bun dev
+
 # or npm run dev / pnpm dev / yarn dev
 
 5. Build for production
-bun run build
+   bun run build
+
 # or npm run build / pnpm build / yarn build
 
 6. Preview production build
-bun run preview
+   bun run preview
+
 # or npm run preview / pnpm preview / yarn preview
 
- **Project Structure**
+**Project Structure**
 
 src/  
 ├── api/  
 │ └── githubUsers.ts # Fetch logic  
 ├── hooks/  
-│ └── useUsers.ts # Custom hook for fetching users with basic error handling  
+│ ├── useUsers.ts # Custom hook for fetching users with basic error handling  
+│ └── usedarkMode.ts # Custom hook for toggling theme with local storage persistance  
 ├── pages/  
 │ ├── HomePage.tsx # Paginated users + search  
 │ └── FavoritesPage.tsx # Placeholder (future feature)  
 ├── components/  
 │ ├── UserCard.tsx  
+│ ├── searchBar.tsx  
+│ ├── ToggleDarkMode.tsx  
+│ ├── UserList.tsx  
 │ └── PaginationControls.tsx  
 ├── store/  
-│   └── favoritesStore.ts     # Zustand store for managing favorites  
+│ └── favoritesStore.ts # Zustand store for managing favorites  
 ├── App.tsx # Routing and navigation  
-└── main.tsx  
+└── main.tsx
 
- **Technical Notes**  
-*Pagination*
+**Technical Notes**
+
+_Pagination_
 
 Pagination uses GitHub’s since parameter.
 This is a cursor-like pagination that relies on user IDs, not traditional page numbers.
 This approach can cause inconsistencies if GitHub data changes or if users are deleted between requests.
 
-*Search*
+_Search_
 
 The search feature is client-side only and filters users within the currently fetched page.
 A debounce mechanism prevents unnecessary re-renders while typing.
 
-*Favorites*
+_Favorites_
 
 The favorites feature is managed globally using Zustand. User data is persisted in localStorage via Zustand's persist middleware, ensuring the list is saved across page reloads. The /favorites route reads from this store to display saved users.
 
- **Known Issues & Future Improvements**
+\*Dark Mode
+
+\*The application supports both light and dark themes. The implementation uses Tailwind CSS’s built-in dark variant and saves the user's preference to localStorage to ensure persistence across sessions.
+
+**Known Issues & Future Improvements**
 
 Pagination Works, but relies on user IDs (since param) Can lead to inconsistent results when moving back/forth
-Search Functional (debounced) Currently local to fetched data only
-Error Handling Minimal Needs more robust handling for GitHub API errors
-Dark Mode Not implemented yet Will be added later if time allows
 
- **Backlog / Next Steps**
+Search Functional (debounced) Currently local to fetched data only
+
+Error Handling Minimal Needs more robust handling for GitHub API errors
+
+**Backlog / Next Steps**
 
 Improve error handling with toasts and better UI states.
-
-Add Dark Mode toggle using Tailwind’s theme utilities.
 
 Replace ID-based pagination with a cursor-based or infinite scroll strategy.
 
@@ -152,7 +169,7 @@ Add Jest unit tests for hooks and components.
 
 Review accessibility and keyboard navigation.
 
- **Technical Rationale**
+**Technical Rationale**
 
 React 19 and Vite were chosen for their modern, fast developer experience.
 
@@ -160,7 +177,7 @@ TypeScript ensures type safety and easier maintenance.
 
 Fetch API was used instead of Axios to keep dependencies minimal.
 
-Tailwind CSS allows quick, responsive UI development.
+Tailwind CSS allows quick, responsive UI development and built-in dark mode support.
 
 Zustand was chosen for state management due to its simplicity, minimal boilerplate, and powerful persist middleware for handling localStorage.
 
@@ -168,7 +185,7 @@ React Router v7+ provides a clean routing structure for SPA navigation.
 
 Debounced search improves UX without unnecessary re-renders.
 
- **Code Review Notes**
+**Code Review Notes**
 
 Error handling is minimal and should be expanded to differentiate between rate limits, 404s, and network issues.
 
@@ -180,7 +197,7 @@ Future iterations should extract UI feedback (loading/error) into dedicated comp
 
 Overall, the foundation is clean and extendable for the next iteration.
 
- **Requirements**
+**Requirements**
 
 Node.js ≥ 20
 
@@ -188,7 +205,7 @@ Package manager: Bun / npm / pnpm / yarn
 
 Environment: Works on any OS with a modern browser
 
- **Boilerplate Notes**
+**Boilerplate Notes**
 
 The original Vite React TypeScript template notes have been moved to
 docs/boilerplate-template-notes.md for reference.
