@@ -1,70 +1,66 @@
-import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
-
+import { useEffect, useRef, useState, useMemo } from "react";
 import SearchBar from "../components/SearchBar";
-import PaginationControls from "../components/PaginationControls";
 import UserList from "../components/UsersList";
 import { useUsers } from "../hooks/useUsers";
+import type { GitHubUser } from "../api/githubUsers";
 
 export default function HomePage() {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [users, setUsers] = useState<GitHubUser[]>([]);
+  const [since, setSince] = useState(0);
+  const perPage = 15;
 
-  const since = Number(searchParams.get("since")) || 0;
-  const perPage = Number(searchParams.get("perPage")) || 9;
-  const initialSearch = searchParams.get("search") || "";
+  const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedTerm, setDebouncedTerm] = useState("");
 
-  const [searchTerm, setSearchTerm] = useState(initialSearch);
-  const [debouncedTerm, setDebouncedTerm] = useState(initialSearch);
-
-  const { users, loading, error } = useUsers(since, perPage);
+  const { users: fetchedUsers, loading, error } = useUsers(since, perPage);
+  const observerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedTerm(searchTerm);
-    }, 500);
+    if (fetchedUsers.length > 0) {
+      setUsers((prev) => {
+        const existingIds = new Set(prev.map((u) => u.id));
+        const newUsers = fetchedUsers.filter((u) => !existingIds.has(u.id));
+        return [...prev, ...newUsers];
+      });
+    }
+  }, [fetchedUsers]);
+
+  useEffect(() => {
+    const handler = setTimeout(() => setDebouncedTerm(searchTerm), 500);
     return () => clearTimeout(handler);
   }, [searchTerm]);
 
+  const filteredUsers = useMemo(() => {
+    if (!debouncedTerm) return users;
+    const term = debouncedTerm.toLowerCase();
+    return users.filter((user) => user.login.toLowerCase().includes(term));
+  }, [users, debouncedTerm]);
+
+  const isSearching = debouncedTerm.length > 0;
+
   useEffect(() => {
-    const newParams = new URLSearchParams(searchParams.toString());
-    if (debouncedTerm) {
-      newParams.set("search", debouncedTerm);
-    } else {
-      newParams.delete("search");
-    }
-    setSearchParams(newParams);
-  }, [debouncedTerm, searchParams, setSearchParams]);
+    if (isSearching) return;
 
-  const filteredUsers = users.filter((user) =>
-    user.login.toLowerCase().includes(debouncedTerm.toLowerCase())
-  );
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !loading && users.length > 0) {
+          const lastUser = users[users.length - 1];
+          setSince(lastUser.id);
+        }
+      },
+      { threshold: 0.5 }
+    );
 
-  const updateParams = (updates: Record<string, string>) => {
-    const newParams = new URLSearchParams(searchParams.toString());
-    Object.entries(updates).forEach(([key, value]) => {
-      newParams.set(key, value);
-    });
-    setSearchParams(newParams);
-  };
+    const currentRef = observerRef.current;
+    if (currentRef) observer.observe(currentRef);
 
-  const goNext = () => {
-    const lastUser = users[users.length - 1];
-    if (lastUser) {
-      updateParams({ since: String(lastUser.id), perPage: String(perPage) });
-    }
-  };
-
-  const goPrev = () => {
-    const prev = Math.max(since - perPage, 0);
-    updateParams({ since: String(prev), perPage: String(perPage) });
-  };
-
-  const goFirst = () => {
-    updateParams({ since: "0", perPage: String(perPage) });
-  };
+    return () => {
+      if (currentRef) observer.unobserve(currentRef);
+    };
+  }, [loading, users, isSearching]);
 
   return (
-    <div className="p-6">
+    <div className="p-6 max-w-7xl mx-auto">
       <h1 className="text-2xl font-semibold mb-4">GitHub Users</h1>
 
       <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
@@ -81,17 +77,17 @@ export default function HomePage() {
         </div>
       )}
 
-      <UserList users={filteredUsers} />
+          <UserList users={filteredUsers} />
 
-      <PaginationControls
-        since={since}
-        perPage={perPage}
-        goNext={goNext}
-        goPrev={goPrev}
-        goFirst={goFirst}
-        disablePrev={since <= 0}
-        disableNext={users.length < perPage}
-      />
+          {!isSearching && <div ref={observerRef} className="h-10" />}
+
+          {loading && users.length > 0 && !isSearching && (
+            <p className="text-center text-gray-500 py-4">
+              Loading more users...
+            </p>
+          )}
+        </>
+      )}
     </div>
   );
 }

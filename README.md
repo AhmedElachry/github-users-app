@@ -7,7 +7,7 @@ It fetches and displays paginated lists of GitHub users using GitHub’s public 
 
 Fetch & Display Users — Using GitHub’s REST API (https://api.github.com/users).
 
-Pagination Controls — Next / Previous buttons using the since parameter.
+Infinite Scroll — Users are loaded automatically as the user scrolls down the page, replacing manual pagination for a seamless experience.
 
 Search Functionality — Debounced client-side search within the fetched page.
 
@@ -128,7 +128,7 @@ src/
 │ ├── searchBar.tsx  
 │ ├── ToggleDarkMode.tsx  
 │ ├── UserList.tsx  
-│ └── PaginationControls.tsx  
+│ └── PaginationControls.tsx # this file is useless now but i left it for reviewing purpose  
 ├── store/  
 │ └── favoritesStore.ts # Zustand store for managing favorites  
 ├── App.tsx # Routing and navigation  
@@ -136,11 +136,9 @@ src/
 
 **Technical Notes**
 
-_Pagination_
+_Infinite Scroll_
 
-Pagination uses GitHub’s since parameter.
-This is a cursor-like pagination that relies on user IDs, not traditional page numbers.
-This approach can cause inconsistencies if GitHub data changes or if users are deleted between requests.
+The application now uses an infinite scroll mechanism to load more users. This is implemented using the Intersection Observer API to detect when the user has scrolled to the bottom of the list, providing a more seamless browsing experience than traditional pagination.
 
 _Search_
 
@@ -151,9 +149,9 @@ _Favorites_
 
 The favorites feature is managed globally using Zustand. User data is persisted in localStorage via Zustand's persist middleware, ensuring the list is saved across page reloads. The /favorites route reads from this store to display saved users.
 
-\*Dark Mode
+_Dark Mode_
 
-\*The application supports both light and dark themes. The implementation uses Tailwind CSS’s built-in dark variant and saves the user's preference to localStorage to ensure persistence across sessions.
+The application supports both light and dark themes. The implementation uses Tailwind CSS’s built-in dark variant and saves the user's preference to localStorage to ensure persistence across sessions.
 
 Toast Notifications
 
@@ -161,15 +159,11 @@ The app uses Sonner to provide non-intrusive toast notifications. This gives the
 
 **Known Issues & Future Improvements**
 
-Pagination Works, but relies on user IDs (since param) Can lead to inconsistent results when moving back/forth
-
 Error Handling Minimal Needs more robust handling for GitHub API errors, UI feedback for user actions is implemented (toasts).
 
 **Backlog / Next Steps**
 
 Improve error handling with toasts and better UI states.
-
-Replace ID-based pagination with a cursor-based or infinite scroll strategy.
 
 Add Jest unit tests for hooks and components.
 
@@ -197,7 +191,7 @@ Sonner was selected for toast notifications due to its clean design, ease of use
 
 Error handling is minimal and should be expanded to differentiate between rate limits, 404s, and network issues.
 
-The pagination approach works but is not ideal for stable back/forward navigation (known GitHub API limitation).
+The migration to infinite scroll using the Intersection Observer API is a significant UX improvement over manual pagination and is implemented cleanly within the useUsers hook. it fixxed activly changed data on each page with pagination aproach beacouse reling on users IDs due to deleted users from DB.
 
 The code structure is modular and maintainable — api/, hooks/, and pages/ separation is clear.
 
