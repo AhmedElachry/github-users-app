@@ -9,7 +9,6 @@ export default function useDarkMode() {
     return window.matchMedia("(prefers-color-scheme: dark)").matches;
   });
 
-  // Toggle dark mode
   const toggleDarkMode = useCallback(() => {
     setIsDarkMode((prev) => {
       const newMode = !prev;

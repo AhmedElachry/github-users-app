@@ -23,6 +23,10 @@ Environment Variable Support — Optional GitHub token via .env file to increase
 
 Dark Mode — Toggle between light and dark themes with the user's preference saved in localStorage.
 
+Enhanced Loading States — Skeleton loaders are displayed while fetching new users to improve perceived performance and visual continuity.
+
+Improved Error Handling — Clear, user-friendly error messages are now shown for API or network failures.
+
 **Tech Stack**
 
 React 19
@@ -125,12 +129,14 @@ src/
 │ └── FavoritesPage.tsx # Placeholder (future feature)  
 ├── components/  
 │ ├── UserCard.tsx  
+│ ├── UserSkeleton.tsx   # skeleton loader
+│ ├── NavBar.tsx         # Active route highlighting  
 │ ├── searchBar.tsx  
 │ ├── ToggleDarkMode.tsx  
 │ ├── UserList.tsx  
 │ └── PaginationControls.tsx # this file is useless now but i left it for reviewing purpose  
 ├── store/  
-│ └── favoritesStore.ts # Zustand store for managing favorites  
+│ └── favoritesStore.ts # Zustand store for managing favorites with persist
 ├── App.tsx # Routing and navigation  
 └── main.tsx
 
@@ -139,6 +145,12 @@ src/
 _Infinite Scroll_
 
 The application now uses an infinite scroll mechanism to load more users. This is implemented using the Intersection Observer API to detect when the user has scrolled to the bottom of the list, providing a more seamless browsing experience than traditional pagination.
+
+_Loading & Error Handling_
+
+Skeleton Loaders: While data is being fetched, placeholder cards are displayed for a smoother loading experience.
+
+Refined Error Messages: showing clear, actionable messages instead of generic ones.
 
 _Search_
 
@@ -159,15 +171,11 @@ The app uses Sonner to provide non-intrusive toast notifications. This gives the
 
 **Known Issues & Future Improvements**
 
-Error Handling Minimal Needs more robust handling for GitHub API errors, UI feedback for user actions is implemented (toasts).
+Expand error handling to show retry options or fallbacks for API rate limits.
 
 **Backlog / Next Steps**
 
-Improve error handling with toasts and better UI states.
-
 Add Jest unit tests for hooks and components.
-
-Review accessibility and keyboard navigation.
 
 **Technical Rationale**
 
@@ -186,6 +194,8 @@ React Router v7+ provides a clean routing structure for SPA navigation.
 Debounced search improves UX without unnecessary re-renders.
 
 Sonner was selected for toast notifications due to its clean design, ease of use, and lightweight nature.
+
+Intersection Observer for efficient infinite scrolling.
 
 **Code Review Notes**
 

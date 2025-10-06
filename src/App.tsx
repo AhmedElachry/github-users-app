@@ -1,23 +1,12 @@
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import FavouritesPage from "./pages/FavouritesPage";
-import ToggleDarkMode from "./components/ToggleDarkMode";
+import Navbar from "./components/NavBar";
 
 function App() {
   return (
     <div className="dark:bg-gray-800 dark:text-white min-h-dvh">
-      <nav className="p-4 border-b border-gray-300 flex justify-between items-center">
-        <div>
-          <Link to="/" className="p-4">
-            Home
-          </Link>
-          <Link className="p-4" to="/favorites">
-            Favorites
-          </Link>
-        </div>
-
-        <ToggleDarkMode />
-      </nav>
+      <Navbar />
 
       <main className="p-4">
         <Routes>
