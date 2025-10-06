@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useMemo } from "react";
 import SearchBar from "../components/SearchBar";
 import UserList from "../components/UsersList";
+import UserSkeletonList from "../components/UserSkeleton";
 import { useUsers } from "../hooks/useUsers";
 import type { GitHubUser } from "../api/githubUsers";
 
@@ -65,17 +66,25 @@ export default function HomePage() {
 
       <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
-      {loading && <p>Loading...</p>}
-      {error && <p className="text-red-500">{error}</p>}
-      {!loading && !error && filteredUsers.length === 0 && (
+      {error && !loading && users.length === 0 && (
         <div className="text-center py-8">
-          <p className="text-gray-500">
-            {debouncedTerm
-              ? `No users found matching "${debouncedTerm}"`
-              : "No users found."}
-          </p>
+          <p className="text-red-500">{error}</p>
         </div>
       )}
+
+      {loading && users.length === 0 ? (
+        <UserSkeletonList count={perPage} />
+      ) : (
+        <>
+          {filteredUsers.length === 0 && !loading && users.length > 0 && (
+            <div className="text-center py-8">
+              <p className="text-gray-500">
+                {debouncedTerm
+                  ? `No users found matching "${debouncedTerm}"`
+                  : "No users found."}
+              </p>
+            </div>
+          )}
 
           <UserList users={filteredUsers} />
 
