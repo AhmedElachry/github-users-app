@@ -129,14 +129,14 @@ src/
 ├── pages/  
 │ ├── HomePage.tsx # Paginated users + search  
 │ └── FavoritesPage.tsx # Placeholder (future feature)  
-│ └── NotFound.tsx # NotFound page for invalid routes   
+│ └── NotFound.tsx # NotFound page for invalid routes  
 ├── components/  
 │ ├── UserCard.tsx  
-│ ├── UserSkeleton.tsx   # skeleton loader  
-│ ├── NavBar.tsx         # Active route highlighting  
+│ ├── UserSkeleton.tsx # skeleton loader  
+│ ├── NavBar.tsx # Active route highlighting  
 │ ├── searchBar.tsx  
 │ ├── ToggleDarkMode.tsx  
-│ ├── Errorboundary.tsx  # global error boundaru component to catch unexpected errors stopping app from cruching  
+│ ├── Errorboundary.tsx # global error boundaru component to catch unexpected errors stopping app from cruching  
 │ ├── UserList.tsx  
 │ └── PaginationControls.tsx # this file is useless now but i left it for reviewing purpose  
 ├── store/  
@@ -212,6 +212,8 @@ The code structure is modular and maintainable — api/, hooks/, and pages/ sepa
 Future iterations should extract UI feedback (loading/error) into dedicated components.
 
 Overall, the foundation is clean and extendable for the next iteration.
+
+# For a detailed, self-critical review and prioritized next steps, see [CODE_REVIEW.md](CODE_REVIEW.md).
 
 **Requirements**
 
