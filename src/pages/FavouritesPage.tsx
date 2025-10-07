@@ -1,5 +1,6 @@
 import { useFavoritesStore } from "../store/favouritesStore";
 import UserCard from "../components/UserCard";
+import ScrollToTopComponent from "../components/ScrollToTop";
 
 export default function FavoritesPage() {
   const favorites = useFavoritesStore((state) => state.favorites);
@@ -17,6 +18,7 @@ export default function FavoritesPage() {
           ))}
         </div>
       )}
+      <ScrollToTopComponent />
     </div>
   );
 }

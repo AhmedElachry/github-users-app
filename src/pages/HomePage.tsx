@@ -4,6 +4,7 @@ import UserList from "../components/UsersList";
 import UserSkeletonList from "../components/UserSkeleton";
 import { useUsers } from "../hooks/useUsers";
 import type { GitHubUser } from "../api/githubUsers";
+import ScrollToTopComponent from "../components/ScrollToTop";
 
 export default function HomePage() {
   const [users, setUsers] = useState<GitHubUser[]>([]);
@@ -97,6 +98,7 @@ export default function HomePage() {
           )}
         </>
       )}
+      <ScrollToTopComponent />
     </div>
   );
 }
