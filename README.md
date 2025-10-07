@@ -27,6 +27,8 @@ Enhanced Loading States — Skeleton loaders are displayed while fetching new us
 
 Improved Error Handling — Clear, user-friendly error messages are now shown for API or network failures.
 
+Robust error handling with a global `ErrorBoundary` component and a `NotFound` page for invalid routes.
+
 **Tech Stack**
 
 React 19
@@ -127,16 +129,18 @@ src/
 ├── pages/  
 │ ├── HomePage.tsx # Paginated users + search  
 │ └── FavoritesPage.tsx # Placeholder (future feature)  
+│ └── NotFound.tsx # NotFound page for invalid routes   
 ├── components/  
 │ ├── UserCard.tsx  
-│ ├── UserSkeleton.tsx   # skeleton loader
+│ ├── UserSkeleton.tsx   # skeleton loader  
 │ ├── NavBar.tsx         # Active route highlighting  
 │ ├── searchBar.tsx  
 │ ├── ToggleDarkMode.tsx  
+│ ├── Errorboundary.tsx  # global error boundaru component to catch unexpected errors stopping app from cruching  
 │ ├── UserList.tsx  
 │ └── PaginationControls.tsx # this file is useless now but i left it for reviewing purpose  
 ├── store/  
-│ └── favoritesStore.ts # Zustand store for managing favorites with persist
+│ └── favoritesStore.ts # Zustand store for managing favorites with persist  
 ├── App.tsx # Routing and navigation  
 └── main.tsx
 
