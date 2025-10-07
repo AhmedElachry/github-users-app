@@ -6,7 +6,7 @@ export default function FavoritesPage() {
   const favorites = useFavoritesStore((state) => state.favorites);
 
   return (
-    <div className="p-6">
+    <div className="p-6 max-w-7xl mx-auto">
       <h1 className="text-xl font-bold mb-4">⭐ Favorite Users</h1>
 
       {favorites.length === 0 ? (
